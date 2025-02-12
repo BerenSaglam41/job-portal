@@ -31,6 +31,23 @@ export const clerkWebHooks = async (req, res) => {
                 res.json({ success: true, message: "User created" });
                 break;
             }
+            case 'user.updated':{
+                const userData = {
+                    email : data.email_adresses[0].email_adresses,
+                    name : data.first_name + " " + data.last_name,
+                    image : data.image_url,
+                }
+                await User.findByIdAndUpdate(data.id,userData);
+                res.json({})
+                break;
+            }
+            case 'user.deleted':{
+                await User.findByIdAndDelete(data.id)
+                res.json({})
+                console.log("✅ Kullanıcı kaydedildi:", userData);
+                res.json({ success: true, message: "User created" });
+                break;
+            }
             default:
                 console.log("⚠️ Bilinmeyen Webhook Türü:", type);
                 res.json({ success: false, message: "Unhandled event type" });
