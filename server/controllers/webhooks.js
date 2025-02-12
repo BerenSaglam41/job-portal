@@ -1,59 +1,38 @@
-import { Webhook } from "svix";
-import User from '../models/User.js';
-import dotenv from 'dotenv'
-dotenv.config()
-
-// API Controller function to manage clerk user with database
-export const clerkWebHooks = async (req,res) =>{
+export const clerkWebHooks = async (req, res) => {
     try {
-        console.log("selam");
-        // Create a Svix instance with clerk webhook secret.
-        const whook = new Webhook(process.env.CLERK_WEBHOOK_SECRET);
+        console.log("📌 Webhook çağrıldı!");
         
-        // Verify headers
-        await whook.verify(JSON.stringify(req.body),{
-            "svix-id" : req.headers["svix-id"],
-            "svix-timestamp" : req.headers["svix-timestamp"],
-            "svix-signature" : req.headers["svix-signature"]
-        });
-
-        // Getting data from req body
-        const {data,type} = req.body;
-
-        // Switch cases for different events
+        console.log("📢 Gelen Webhook Verisi:", JSON.stringify(req.body, null, 2)); // Webhook verisini logla
+        
+        const { data, type } = req.body;
+        console.log("📢 Webhook Türü:", type);
+        
         switch (type) {
-            case 'user.created':{
+            case 'user.created': {
+                console.log("👤 Yeni kullanıcı oluşturuluyor:", data);
+
+                // EMAIL ADRESİNİN VAR OLDUĞUNDAN EMİN OL
+                const email = data.email_addresses?.length > 0 ? data.email_addresses[0].email : "Bilinmiyor";
+
                 const userData = {
-                    _id : data.id,
-                    email : data.email_adresses[0].email_adresses,
-                    name : data.first_name + " " + data.last_name,
-                    image : data.image_url,
-                    resume : ''
-                }
+                    _id: data.id,
+                    email: email,
+                    name: `${data.first_name} ${data.last_name}`,
+                    image: data.image_url,
+                    resume: ''
+                };
                 await User.create(userData);
-                res.json({})
+                console.log("✅ Kullanıcı kaydedildi:", userData);
+                res.json({ success: true, message: "User created" });
                 break;
             }
-            case 'user.updated':{
-                const userData = {
-                    email : data.email_adresses[0].email_adresses,
-                    name : data.first_name + " " + data.last_name,
-                    image : data.image_url,
-                }
-                await User.findByIdAndUpdate(data.id,userData);
-                res.json({})
-                break;
-            }
-            case 'user.deleted':{
-                await User.findByIdAndDelete(data.id)
-                res.json({})
-                break;
-            }
-            default : 
+            default:
+                console.log("⚠️ Bilinmeyen Webhook Türü:", type);
+                res.json({ success: false, message: "Unhandled event type" });
                 break;
         }
     } catch (error) {
-        console.log(error.message);
-        res.json({succes:false,message : "Webhooks Error"})
+        console.error("❌ Webhook Hatası:", error.message);
+        res.status(400).json({ success: false, message: "Webhook Error", error: error.message });
     }
 };
