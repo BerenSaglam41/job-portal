@@ -17,7 +17,7 @@ export const clerkWebHooks = async (req, res) => {
                 console.log("👤 Yeni kullanıcı oluşturuluyor:", data);
 
                 // EMAIL ADRESİNİN VAR OLDUĞUNDAN EMİN OL
-                const email = data.email_addresses?.length > 0 ? data.email_addresses[0].email : "Bilinmiyor";
+                const email = data.email_addresses?.[0]?.email_address || "Bilinmiyor";
 
                 const userData = {
                     _id: data.id,
