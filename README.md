@@ -20,13 +20,13 @@ Bu proje, React.js ve Node.js teknolojileri kullanılarak geliştirilmiş tam ka
 ## 🖼️ Ekran Görüntüleri
 
 ### 1. Ana Sayfa Arayüzü
-![Ana Sayfa](./client/img/1.png)
+![Ana Sayfa](./img/1.png)
 
 ### 2. Filtreleme Paneli
-![Filtreleme](./client/img/2.png)
+![Filtreleme](./img/2.png)
 
 ### 3. İş Kartı Detayı
-![İş Kartı](./client/img/3.png)
+![İş Kartı](./img/3.png)
 
 ### 4. Sayfalama ve Başvuru
-![Sayfalama](./client/img/4.png)
+![Sayfalama](./img/4.png)
