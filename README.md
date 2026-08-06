@@ -30,3 +30,31 @@ Bu proje, React.js ve Node.js teknolojileri kullanılarak geliştirilmiş tam ka
 
 ### 4. Sayfalama ve Başvuru
 ![Sayfalama](./img/4.png)
+
+## 🚀 Yerel Kurulum
+
+### Backend
+
+```bash
+cd server
+npm install
+npm run server
+```
+
+`server/.env.example` dosyasını `.env` adıyla kopyalayıp MongoDB, Clerk, Cloudinary ve diğer servis değerlerini tanımlayın. Frontend için aynı işlemi `client/.env.example` dosyasıyla uygulayın.
+
+### Frontend
+
+```bash
+cd client
+npm install
+npm run dev
+```
+
+## 📁 Proje Yapısı
+
+```text
+client/  React kullanıcı arayüzü
+server/  Express API, veritabanı modelleri ve dosya yükleme akışları
+img/     README ekran görüntüleri
+```
